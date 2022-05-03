@@ -20,7 +20,7 @@ class Usuario(BaseModel):
     admin: bool = Field(None, alias="admin")
     avatar: str = Field(None, alias= "avatar")
 
-    def set_usuario(self, user_id, username, senha, email, admin, avatar):
+    def set_user(self, user_id, username, senha, email, admin, avatar):
         self.user_id = user_id
         self.username = username
         self.senha = senha
@@ -28,19 +28,19 @@ class Usuario(BaseModel):
         self.admin = admin
         self.avatar = avatar
 
-    def inserir(self, user_id, username, senha, email, admin, avatar):
-        self.set_usuario( user_id, username, senha, email, admin, avatar)
+    def insert_user(self, user_id, username, senha, email, admin, avatar):
+        self.set_user( user_id, username, senha, email, admin, avatar)
         sql = f"INSERT INTO USUARIO (user_id, username, password,email,admin,avatar)"
         sql += f"VALUES ('{user_id}', '{username}', '{senha}','{email}','{admin}','{avatar}')"
-        inserir_db(sql)
+        insert_db(sql)
 
-    def consulta(self):
+    def read_user(self):
         sql = f"SELECT * FROM USUARIO;"
-        resultado = consultar_db(sql)
+        resultado = read_db(sql)
         return resultado
 
-    def alterar(self,  user_id, username, senha, email, admin, avatar):
-        self.set_usuario( user_id, username, senha, email, admin, avatar)
+    def put_user(self,  user_id, username, senha, email, admin, avatar):
+        self.set_user( user_id, username, senha, email, admin, avatar)
         sql = f"UPDATE USUARIO "
         sql += f"SET username = '{username}',"
         sql += f" password = '{senha}',"
@@ -48,14 +48,14 @@ class Usuario(BaseModel):
         sql += f" admin = '{admin}',"
         sql += f" avatar = '{avatar}'"
         sql += f"WHERE user_id = '{user_id}'"
-        inserir_db(sql)
+        insert_db(sql)
 
-    def excluir(self, user_id):
+    def delete_user(self, user_id):
         sql = f"DELETE FROM USUARIO"
         sql += f" WHERE user_id = '{user_id}'"
-        inserir_db(sql)
+        insert_db(sql)
     
-    def consulta_por_id(self, user_id):
+    def find_by_id_user(self, user_id):
         sql = f"SELECT * FROM USUARIO WHERE user_id = '{user_id}'"
-        resultado = consultar_db(sql)
+        resultado = read_db(sql)
         return resultado

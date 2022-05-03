@@ -1,19 +1,18 @@
 import psycopg2
-from sqlalchemy import false
 
-def conecta_db():
-    con = psycopg2.connect(host='ec2-3-209-124-113.compute-1.amazonaws.com', 
-                            database='dd9jdc6nipc3hh',
-                            user='ojwyfpeihoevxu', 
-                            password='e632432f03a787d335c96ab0920e7156d808d8cea213ad94f93c95ae838cbec3')
+def connect_db():
+    con = psycopg2.connect(host='ec2-52-5-110-35.compute-1.amazonaws.com', 
+                            database='d27fpf0b9mc5lk',
+                            user='inixdviasnbjiz', 
+                            password='7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679')
     return con
 
-def desconecta():
-    bd = conecta_db
+def disconnect():
+    bd = connect_db()
     return bd.close()
 
-def inserir_db(sql):
-    con = conecta_db()
+def insert_db(sql):
+    con = connect_db()
     cur = con.cursor()
     try:
         cur.execute(sql)
@@ -25,8 +24,8 @@ def inserir_db(sql):
         return False
     cur.close()
 
-def consultar_db(sql):
-    con = conecta_db()
+def read_db(sql):
+    con = connect_db()
     cur = con.cursor()
     cur.execute(sql)
     recset = cur.fetchall()
@@ -36,6 +35,4 @@ def consultar_db(sql):
     con.close()
     print(registros)
     return registros
-
-print(consultar_db("SELECT * FROM USUARIO"))
 

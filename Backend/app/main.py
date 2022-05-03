@@ -10,7 +10,7 @@ app.include_router(router.router)
 
 @app.get("/")
 async def Home():
-    return "Bem vindo"
+    return "Bem vindo a API-REST da GALATIKA-SHOP"
 
 
 if __name__ == "__main__":

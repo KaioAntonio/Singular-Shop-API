@@ -4,33 +4,33 @@ from db.config import *
 
 router = APIRouter()
 
-@router.post("/usuario", tags=["usuario"])
+@router.post("/login", tags=["login"])
 def set_user(user_id: str, username: str, senha: str, email: str, admin: bool, avatar:str):
     user = Usuario()
-    user.inserir(user_id, username, senha, email, admin, avatar)
+    user.insert_user(user_id, username, senha, email, admin, avatar)
     return user
 
-@router.get("/usuario", tags=["usuario"])
+@router.get("/login", tags=["login"])
 def get_all_users():
     user = Usuario()
-    return user.consulta()
+    return user.read_user()
 
-@router.put("/usuario/{user_id}", tags=["usuario"])
+@router.put("/login/{user_id}", tags=["login"])
 def put_user(user_id: str, username: str, senha: str, email: str, admin: bool, avatar:str):
     user = Usuario()
-    user.alterar(user_id, username, senha, email, admin, avatar)
+    user.put_user(user_id, username, senha, email, admin, avatar)
     return user
 
-@router.delete("/usuario/{user_id}", tags=["usuario"])
+@router.delete("/login/{user_id}", tags=["login"])
 def delete_user(user_id: str):
     user = Usuario()
-    user.excluir(user_id)
+    user.delete_user(user_id)
     return "Deletado Com sucesso!"
 
-@router.get("/usuario/{user_id}", tags=["usuario"])
+@router.get("/login/{user_id}", tags=["login"])
 def get_user_by_id(user_id: str):
     user = Usuario()
-    return user.consulta_por_id(user_id)
+    return user.find_by_id_user(user_id)
 
 
 
