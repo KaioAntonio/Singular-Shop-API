@@ -29,10 +29,12 @@ def read_db(sql):
     cur = con.cursor()
     cur.execute(sql)
     recset = cur.fetchall()
-    registros = []
+    list_users = []
     for rec in recset:
-        registros.append(rec)
-    con.close()
-    print(registros)
-    return registros
+        requireds = {"user_id": rec[0], "username": rec[1], "password": rec[2], "email": rec[3], "admin": rec[4], "avatar": rec[5]}
+        list_users.append(requireds)
+        print(list_users)
+    return list_users
+        
+        
 
