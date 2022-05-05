@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 @router.post("/login", tags=["login"], description="Creates new user")
-def create_user(username: str, password: str, email: str, admin: bool, avatar:str):
+def create_user(username: str, password: str, email: str, admin: str, avatar:str):
     user = User()
     user.insert_user(username, password, email, admin, avatar)
     return user
@@ -19,7 +19,7 @@ def get_all_users():
     return user.read_user()
 
 @router.put("/login/{user_id}", tags=["login"], description= "Update user")
-def put_user(user_id: str, username: str, password: str, email: str, admin: bool, avatar:str):
+def put_user(user_id: str, username: str, password: str, email: str, admin: str, avatar:str):
     user = User()
     user.put_user(user_id, username, password, email, admin, avatar)
     return user

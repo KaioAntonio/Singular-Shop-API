@@ -9,7 +9,7 @@ class User(BaseModel):
     username: str = Field(None, alias="username")
     password: str = Field(None, alias="password")
     email: str = Field(None, alias="email")
-    admin: bool = Field(None, alias="admin")
+    admin: str = Field(None, alias="admin")
     avatar: str = Field(None, alias= "avatar")
 
     def set_user(self, username, password, email, admin, avatar):
