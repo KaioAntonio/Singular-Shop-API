@@ -1,15 +1,15 @@
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI
-from models.usuario import *
+from models.user import *
 from db.config import *
-from routers import router
+from routers import user_router
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
-app.include_router(router.router)
+app.include_router(user_router.router)
 app.add_middleware(
         CORSMiddleware,
         allow_origins=['*']
