@@ -30,23 +30,22 @@ class User(BaseModel):
         resultado = read_db(sql)
         return resultado
 
-    def put_user(self,  user_id, username, password, email, admin, avatar):
-        self.set_user( user_id, username, password, email, admin, avatar)
+    def put_user(self, username, password, admin, avatar, email):
+        self.set_user(username, password, admin, avatar, email)
         sql = f"UPDATE USUARIO "
         sql += f"SET username = '{username}',"
         sql += f" password = '{password}',"
-        sql += f" email = '{email}',"
         sql += f" admin = '{admin}',"
         sql += f" avatar = '{avatar}'"
-        sql += f"WHERE user_id = '{user_id}'"
+        sql += f"WHERE email = '{email}'"
         insert_db(sql)
 
-    def delete_user(self, user_id):
+    def delete_user(self, email):
         sql = f"DELETE FROM USUARIO"
-        sql += f" WHERE user_id = '{user_id}'"
+        sql += f" WHERE email = '{email}'"
         insert_db(sql)
     
-    def find_by_id_user(self, user_id):
-        sql = f"SELECT * FROM USUARIO WHERE user_id = '{user_id}'"
+    def find_by_id_user(self, email):
+        sql = f"SELECT * FROM USUARIO WHERE email = '{email}'"
         resultado = read_db(sql)
         return resultado

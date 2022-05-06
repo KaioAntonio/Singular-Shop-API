@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from hashlib import new
+from fastapi import APIRouter, Request
 from fastapi.encoders import jsonable_encoder
 from models.user import *
 from db.config import *
@@ -8,27 +9,24 @@ router = APIRouter()
 
 
 @router.post("/login", tags=["login"], description="Creates new user")
-def create_user(username: str, password: str, email: str, admin: str, avatar:str):
-    user = User()
-    user.insert_user(username, password, email, admin, avatar)
-    return user
+def create_user(new_user: User):
+    new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
+    return new_user
 
 @router.get("/login", tags=["login"], description= "Reads all users")
 def get_all_users():
     user = User()
     return user.read_user()
 
-@router.put("/login/{user_id}", tags=["login"], description= "Update user")
-def put_user(user_id: str, username: str, password: str, email: str, admin: str, avatar:str):
-    user = User()
-    user.put_user(user_id, username, password, email, admin, avatar)
-    return user
+@router.put("/login", tags=["login"], description= "Update user")
+def put_user(new_user: User):
+    new_user.put_user(new_user.username, new_user.password, new_user.admin, new_user.avatar, new_user.email)
+    return new_user
 
-@router.delete("/login/{user_id}", tags=["login"], description= "Delete user")
-def delete_user(user_id: str):
-    user = User()
-    user.delete_user(user_id)
-    return "Deletado Com sucesso!"
+@router.delete("/login", tags=["login"], description= "Delete user")
+def delete_user(new_user: User):
+    new_user.delete_user(new_user.email)
+    return new_user
 
 @router.get("/login/{user_id}", tags=["login"], description="Reads a user")
 def get_user_by_id(user_id: str):
