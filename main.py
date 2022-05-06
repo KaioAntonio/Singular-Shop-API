@@ -6,11 +6,16 @@ from db.config import *
 from routers import user_router
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 app.include_router(user_router.router)
 origins = ["*"]
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,7 +27,14 @@ app.add_middleware(
 
 @app.get("/")
 async def Home():
-    return "Bem vindo a API-REST da GALATIKA-SHOP"
+    return "Welcome to API-REST of GALATIKA-SHOP"
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": exc.errors(), "body": exc.body}),
+    )
 
 def custom_openapi():
     if app.openapi_schema:
@@ -30,7 +42,7 @@ def custom_openapi():
     openapi_schema = get_openapi(
         title="Galatika-Shop Documentation",
         version="0.1",
-        description="API do E-commerce da Galatika",
+        description="Galatika E-commerce API",
         routes=app.routes,
     )
     openapi_schema["info"]["x-logo"] = {
