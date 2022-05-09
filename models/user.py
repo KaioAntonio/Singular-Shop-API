@@ -2,7 +2,7 @@ from uuid import uuid4
 from pydantic import BaseModel, Field
 from db.config import *
 from passlib.context import CryptContext
-from hasher import *
+from utils.hasher import *
 
 class User(BaseModel):
 
@@ -27,8 +27,8 @@ class User(BaseModel):
 
     def read_user(self):
         sql = f"SELECT * FROM USUARIO;"
-        resultado = read_db(sql)
-        return resultado
+        result = read_db(sql)
+        return result
 
     def put_user(self, username, password, admin, avatar, email):
         self.set_user(username, password, admin, avatar, email)
@@ -47,5 +47,11 @@ class User(BaseModel):
     
     def find_by_id_user(self, email):
         sql = f"SELECT * FROM USUARIO WHERE email = '{email}'"
-        resultado = read_db(sql)
-        return resultado
+        result = read_db(sql)
+        return result
+
+    def find_password(email):
+        sql = f"SELECT password FROM USUARIO WHERE email = '{email}';"
+        result = read_password(sql)
+        print(result)
+        return result

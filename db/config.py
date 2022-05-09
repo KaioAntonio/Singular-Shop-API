@@ -33,8 +33,13 @@ def read_db(sql):
     for rec in recset:
         requireds = {"user_id": rec[0], "username": rec[1], "password": rec[2], "email": rec[3], "admin": rec[4], "avatar": rec[5]}
         list_users.append(requireds)
-        print(list_users)
     return list_users
         
-        
+def read_password(sql):
+    con = connect_db()
+    cur = con.cursor()
+    cur.execute(sql)
+    recset = cur.fetchall()
+    return recset[0][0]
+                
 
