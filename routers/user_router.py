@@ -13,10 +13,12 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post("/login", tags=["login"], description="Creates new user")
 def create_user(new_user: User):
-    dict_user = new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
-    if dict_user == None:
-        return {'error': 'Email is already taken'}
-    return new_user
+    user_exist = load_user(new_user.email)
+    if user_exist:
+        return {'error': 'email is already token'}
+    else:
+        new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
+        return new_user
 
 @router.get("/login", tags=["login"], description= "Reads all users")
 def get_all_users():
@@ -45,13 +47,12 @@ def load_user(email: str):
     return get_user_by_id(email)
 
 @router.post('/auth/token', tags=["login"], description = "Autenticated Token")
-def login(data: OAuth2PasswordRequestForm = Depends()):
-    
+def login(user: User):
 
-    email = data.username
-    password = data.password
+    email = user.username
+    password = user.password
     set_user = User.find_password(email)
-
+    admin = User.find_admin(email)
     user = load_user(email)
 
     if not user:
@@ -64,4 +65,4 @@ def login(data: OAuth2PasswordRequestForm = Depends()):
         data=dict(sub=email)
     )
 
-    return {'access_token': access_token, 'token_type': 'bearer'}
+    return {'access_token': access_token, 'token_type': 'bearer', 'admin': admin}

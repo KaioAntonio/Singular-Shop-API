@@ -55,3 +55,9 @@ class User(BaseModel):
         result = read_password(sql)
         print(result)
         return result
+
+    def find_admin(email):
+        sql = f"SELECT admin FROM USUARIO WHERE email = '{email}';"
+        result = read_password(sql)
+        print(result)
+        return result
