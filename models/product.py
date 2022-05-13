@@ -5,58 +5,44 @@ from utils.hasher import *
 
 class Product(BaseModel):
 
-    username: str = Field(None, alias="username")
-    password: str = Field(None, alias="password")
-    email: str = Field(None, alias="email")
-    admin: str = Field(None, alias="admin")
-    avatar: str = Field(None, alias= "avatar")
+    name_product: str = Field(None, alias="name_product")
+    description: str = Field(None, alias="description")
+    price: str = Field(None, alias="price")
+    image: str = Field(None, alias= "image")
 
-    def set_product(self, username, password, email, admin, avatar):
-        self.username = username
-        self.password = password
-        self.email = email
-        self.admin = admin
-        self.avatar = avatar
+    def set_product(self, name_product, description, price, image):
+        self.name_product = name_product
+        self.description = description
+        self.price = price
+        self.image = image
 
-    def insert_(self, username, password, email, admin, avatar):
-        self.set_user(username, password, email, admin, avatar)
-        sql = f"INSERT INTO USUARIO (user_id, username, password,email,admin,avatar)"
-        sql += f"VALUES ('{str(uuid4())}', '{username}', '{str(Hasher.get_password_hash(password))}','{email}','{admin}','{avatar}')"
+    def insert_product(self, name_product, description, price, image):
+        self.set_product(name_product, description, price, image)
+        sql = f"INSERT INTO product (cod_product, name_product,description,price,image)"
+        sql += f"VALUES ('{str(uuid4())}', '{name_product}','{description}','{price}','{image}')"
         insert_db(sql)
 
-    def read_user(self):
-        sql = f"SELECT * FROM USUARIO;"
-        result = read_db(sql)
+    def read_product(self):
+        sql = f"SELECT * FROM product;"
+        result = read_db_product(sql)
         return result
 
-    def put_user(self, username, password, admin, avatar, email):
-        self.set_user(username, password, admin, avatar, email)
-        sql = f"UPDATE USUARIO "
-        sql += f"SET username = '{username}',"
-        sql += f" password = '{password}',"
-        sql += f" admin = '{admin}',"
-        sql += f" avatar = '{avatar}'"
-        sql += f"WHERE email = '{email}'"
+    def put_product(self, cod_product, name_product, price, image, description):
+        self.set_product(cod_product, name_product, price, image, description)
+        sql = f"UPDATE product "
+        sql += f"SET name_product = '{cod_product}',"
+        sql += f" description = '{description}',"
+        sql += f" price = '{price}',"
+        sql += f" image = '{image}'"
+        sql += f"WHERE cod_product = '{cod_product}'"
         insert_db(sql)
 
-    def delete_user(self, email):
-        sql = f"DELETE FROM USUARIO"
-        sql += f" WHERE email = '{email}'"
+    def delete_product(self, cod_product):
+        sql = f"DELETE FROM product"
+        sql += f" WHERE cod_product = '{cod_product}'"
         insert_db(sql)
     
-    def find_by_id_user(self, email):
-        sql = f"SELECT * FROM USUARIO WHERE email = '{email}'"
-        result = read_db(sql)
-        return result
-
-    def find_password(email):
-        sql = f"SELECT password FROM USUARIO WHERE email = '{email}';"
-        result = read_password(sql)
-        print(result)
-        return result
-
-    def find_admin(email):
-        sql = f"SELECT admin FROM USUARIO WHERE email = '{email}';"
-        result = read_password(sql)
-        print(result)
+    def find_by_id_product(self, cod_product):
+        sql = f"SELECT * FROM product WHERE cod_product = '{cod_product}'"
+        result = read_db_product(sql)
         return result

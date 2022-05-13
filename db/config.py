@@ -34,7 +34,18 @@ def read_db(sql):
         requireds = {"user_id": rec[0], "username": rec[1], "password": rec[2], "email": rec[3], "admin": rec[4], "avatar": rec[5]}
         list_users.append(requireds)
     return list_users
-        
+
+def read_db_product(sql):
+    con = connect_db()
+    cur = con.cursor()
+    cur.execute(sql)
+    recset = cur.fetchall()
+    list_products = []
+    for rec in recset:
+        requireds = {"cod_product": rec[0], "name_product": rec[1], "description": rec[2], "price": rec[3], "image": rec[4]}
+        list_products.append(requireds)
+    return list_products
+
 def read_password(sql):
     con = connect_db()
     cur = con.cursor()
