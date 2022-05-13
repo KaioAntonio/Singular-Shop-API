@@ -40,6 +40,6 @@ def read_password(sql):
     cur = con.cursor()
     cur.execute(sql)
     recset = cur.fetchall()
-    return recset[0][0]
+    return recset
                 
 

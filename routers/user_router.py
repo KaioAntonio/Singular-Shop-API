@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter,  HTTPException
 from models.user import *
 from db.config import *
 from fastapi_login import LoginManager
@@ -46,22 +46,23 @@ def get_user_by_email(email: str):
 manager = LoginManager(SECRET, token_url='/auth/token')
 
 def load_user(email: str):
-    return get_user_by_email(email)
+    user = User()
+    return user.find_by_id_user(email)
 
 @router.post('/v1/login/', tags=["Login"], description = "Autenticated Token")
 def login(user: User):
 
-    email = user.username
+    email = user.email
     password = user.password
     set_user = User.find_password(email)
     admin = User.find_admin(email)
     user = load_user(email)
 
     if not user:
-        return {'error': 'User or Password invalid'}
+        raise HTTPException(status_code=404, detail= 'User or Password invalid')
 
-    elif Hasher.verify_password(password,set_user) == False:
-        return {'error': 'User or Password invalid'}
+    elif Hasher.verify_password(password,set_user[0][0]) == False:
+        raise HTTPException(status_code=404, detail= 'User or Password invalid')
 
     access_token = manager.create_access_token(
         data=dict(sub=email)

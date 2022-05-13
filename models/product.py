@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from db.config import *
 from utils.hasher import *
 
-class User(BaseModel):
+class Product(BaseModel):
 
     username: str = Field(None, alias="username")
     password: str = Field(None, alias="password")
@@ -11,14 +11,14 @@ class User(BaseModel):
     admin: str = Field(None, alias="admin")
     avatar: str = Field(None, alias= "avatar")
 
-    def set_user(self, username, password, email, admin, avatar):
+    def set_product(self, username, password, email, admin, avatar):
         self.username = username
         self.password = password
         self.email = email
         self.admin = admin
         self.avatar = avatar
 
-    def insert_user(self, username, password, email, admin, avatar):
+    def insert_(self, username, password, email, admin, avatar):
         self.set_user(username, password, email, admin, avatar)
         sql = f"INSERT INTO USUARIO (user_id, username, password,email,admin,avatar)"
         sql += f"VALUES ('{str(uuid4())}', '{username}', '{str(Hasher.get_password_hash(password))}','{email}','{admin}','{avatar}')"
