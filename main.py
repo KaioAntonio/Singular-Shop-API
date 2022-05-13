@@ -26,7 +26,7 @@ app.add_middleware(
 
 @app.get("/")
 async def Home():
-    return "Welcome to API-REST of GALATIKA-SHOP"
+    return "Welcome to API-REST of SINGULAR-SHOP /docs to access API documentation"
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):

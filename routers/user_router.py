@@ -11,7 +11,7 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-@router.post("/login", tags=["login"], description="Creates new user")
+@router.post("/v1/user", tags=["User"], description="Creates new user")
 def create_user(new_user: User):
     user_exist = load_user(new_user.email)
     if user_exist:
@@ -20,33 +20,35 @@ def create_user(new_user: User):
         new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
         return new_user
 
-@router.get("/login", tags=["login"], description= "Reads all users")
+@router.get("/v1/user", tags=["User"], description= "Reads all users")
 def get_all_users():
     user = User()
     return user.read_user()
 
 
-@router.put("/login", tags=["login"], description= "Update user")
+@router.put("/v1/user", tags=["User"], description= "Update user")
 def put_user(new_user: User):
     new_user.put_user(new_user.username, new_user.password, new_user.admin, new_user.avatar, new_user.email)
     return new_user
 
-@router.delete("/login", tags=["login"], description= "Delete user")
-def delete_user(new_user: User):
-    new_user.delete_user(new_user.email)
-    return new_user
-
-@router.get("/login/{email}", tags=["login"], description="Reads a user")
-def get_user_by_id(email: str):
+@router.delete("/v1/user/{email}", tags=["User"], description= "Delete user")
+def delete_user(email: str):
     user = User()
-    return user.find_by_id_user(email)
+    user.delete_user(email)
+    print(user)
+    return {"message": "user delete with sucess"}
+
+@router.get("/v1/user/{email}", tags=["User"], description="Reads a user")
+def get_user_by_email(email: str):
+    user = User()
+    return user.find_by_id_user(email)[0]
 
 manager = LoginManager(SECRET, token_url='/auth/token')
 
 def load_user(email: str):
-    return get_user_by_id(email)
+    return get_user_by_email(email)
 
-@router.post('/auth/token', tags=["login"], description = "Autenticated Token")
+@router.post('/v1/login/', tags=["Login"], description = "Autenticated Token")
 def login(user: User):
 
     email = user.username
