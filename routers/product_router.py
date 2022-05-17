@@ -17,7 +17,7 @@ def get_all_products():
 
 @router.put("/v1/product", tags=["Product"], description= "Update product")
 def put_product(new_product: Product):
-    new_product.put_product(new_product.productname, new_product.password, new_product.admin, new_product.avatar, new_product.email)
+    new_product.put_product(new_product.cod_product, new_product.productname, new_product.description, new_product.price, new_product.image)
     return new_product
 
 @router.delete("/v1/product/{cod_product}", tags=["Product"], description= "Delete product")

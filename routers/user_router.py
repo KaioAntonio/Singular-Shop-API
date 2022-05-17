@@ -16,6 +16,8 @@ def create_user(new_user: User):
     user_exist = load_user(new_user.email)
     if user_exist:
         return {'error': 'email is already token'}
+    elif new_user.email == "":
+        return {'error': 'email can not be null'}
     else:
         new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
         return new_user
@@ -69,3 +71,8 @@ def login(user: User):
     )
 
     return {'access_token': access_token, 'token_type': 'bearer', 'admin': admin}
+
+@router.patch('/v1/avatar/', tags=["User"], description="Patch a new avatar")
+def patch_avatar(user: User):
+    new_avatar = user.patch_new_avatar(user.email,user.avatar)
+    return {"message": "Update avatar with sucess!"}

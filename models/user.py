@@ -48,6 +48,11 @@ class User(BaseModel):
         sql = f"SELECT * FROM USUARIO WHERE email = '{email}'"
         result = read_db(sql)
         return result
+    
+    def patch_new_avatar(self, email, avatar):
+        sql = f"UPDATE USUARIO SET avatar = '{avatar}' WHERE email = '{email}'"
+        result = insert_db(sql)
+        return result
 
     def find_password(email):
         sql = f"SELECT password FROM USUARIO WHERE email = '{email}';"
