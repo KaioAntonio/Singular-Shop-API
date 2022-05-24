@@ -14,10 +14,24 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 @router.post("/v1/user", tags=["User"], description="Creates new user")
 def create_user(new_user: User):
     user_exist = load_user(new_user.email)
+    if len(new_user.password) < 8:
+        return {'error': 'password must be longer than 8 characters'}
+
+    if new_user.password.islower():
+        return {'error': 'password must have at least one capital letter'}
+
+    if new_user.password.isalpha():
+        return {'error': 'password need a number'}
+    
+    if new_user.password.isalnum():
+        return {'error': 'password need a special character'}
+
     if user_exist:
         return {'error': 'email is already token'}
+
     elif new_user.email == "":
         return {'error': 'email can not be null'}
+        
     else:
         new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
         return new_user
