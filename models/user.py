@@ -1,7 +1,6 @@
 from uuid import uuid4
 from pydantic import BaseModel, Field
 from db.config import *
-from passlib.context import CryptContext
 from utils.hasher import *
 
 class User(BaseModel):
@@ -48,6 +47,11 @@ class User(BaseModel):
     def find_by_id_user(self, email):
         sql = f"SELECT * FROM USUARIO WHERE email = '{email}'"
         result = read_db(sql)
+        return result
+    
+    def patch_new_avatar(self, email, avatar):
+        sql = f"UPDATE USUARIO SET avatar = '{avatar}' WHERE email = '{email}'"
+        result = insert_db(sql)
         return result
 
     def find_password(email):

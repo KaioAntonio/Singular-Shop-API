@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from models.user import *
 from db.config import *
-from routers import user_router
+from routers import user_router, product_router
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, status
@@ -12,9 +12,8 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 app.include_router(user_router.router)
+app.include_router(product_router.router)
 origins = ["*"]
-
-
 
 app.add_middleware(
     CORSMiddleware,
