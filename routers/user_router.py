@@ -19,7 +19,7 @@ responses_custom = {
         200: {
             "content": {
                 "application/json": {
-                    "example": {"status": 200, "message": "update sucess"}
+                    "example": {"status": 200, "message": "method sucess"}
                 }
             },
         },
@@ -132,9 +132,15 @@ def login(user: User = Body(
     return {'access_token': access_token, 'token_type': 'bearer', 'admin': admin}
 
 @router.patch('/v1/avatar/', tags=["User"], description="Patch a new avatar", responses=responses_custom)
-def patch_avatar(user: User):
+def patch_avatar(user: User = Body(
+    default={
+            "email": "test@test.com",
+            "avatar": "https://thumbs.dreamstime.com/b/imagem-do-avatar-perfil-no-fundo-cinzento-142213585.jpg",
+        }
+    )):
+    user_exist = load_user(user.email)
     if user_exist:
-        new_avatar = user.patch_new_avatar(user.email,user.avatar)
+        user.patch_new_avatar(user.email,user.avatar)
         return {"status": 200, "message": "Update avatar with sucess!"}
     else:
-        return {"status": 422, "message": "validation error"}
+        return {"status": 401, "message": "validation error"}
