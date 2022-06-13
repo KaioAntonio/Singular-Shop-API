@@ -1,7 +1,7 @@
 from uuid import uuid4
 from pydantic import BaseModel, Field
-from db.config import *
-from utils.hasher import *
+from db.config import read_db,insert_db,read_password
+from utils.hasher import Hasher
 
 class User(BaseModel):
 
@@ -54,13 +54,13 @@ class User(BaseModel):
         result = insert_db(sql)
         return result
 
-    def find_password(email):
+    def find_password(self,email):
         sql = f"SELECT password FROM USUARIO WHERE email = '{email}';"
         result = read_password(sql)
         print(result)
         return result
 
-    def find_admin(email):
+    def find_admin(self,email):
         sql = f"SELECT admin FROM USUARIO WHERE email = '{email}';"
         result = read_password(sql)
         print(result)
