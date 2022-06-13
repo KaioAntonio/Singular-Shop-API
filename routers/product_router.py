@@ -14,7 +14,7 @@ responses_custom = {
         200: {
             "content": {
                 "application/json": {
-                    "example": {"status": 200, "message": "update sucess"}
+                    "example": {"status": 200, "message": "method sucess"}
                 }
             },
         },

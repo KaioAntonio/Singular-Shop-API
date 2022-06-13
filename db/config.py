@@ -1,10 +1,14 @@
 import psycopg2
+import os
+
+USER = "inixdviasnbjiz"
+PASSWORD = "7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679"
 
 def connect_db():
     con = psycopg2.connect(host='ec2-52-5-110-35.compute-1.amazonaws.com', 
                             database='d27fpf0b9mc5lk',
-                            user='inixdviasnbjiz', 
-                            password='7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679')
+                            user= os.getenv(USER,"inixdviasnbjiz" ),
+                            password= os.getenv(PASSWORD, "7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679"))
     return con
 
 def disconnect():
@@ -53,4 +57,14 @@ def read_password(sql):
     recset = cur.fetchall()
     return recset
                 
+def read_db_section(sql):
+    con = connect_db()
+    cur = con.cursor()
+    cur.execute(sql)
+    recset = cur.fetchall()
+    list_products = []
+    for rec in recset:
+        requireds = {"id_section": rec[0], "cod_product": rec[1], "name_section": rec[2]}
+        list_products.append(requireds)
+    return list_products
 

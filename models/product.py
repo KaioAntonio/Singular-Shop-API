@@ -1,7 +1,6 @@
 from uuid import uuid4
 from pydantic import BaseModel, Field
-from db.config import *
-from utils.hasher import *
+from db.config import insert_db,read_db_product
 
 class Product(BaseModel):
 
@@ -28,7 +27,7 @@ class Product(BaseModel):
         return result
 
     def put_product(self, cod_product, name_product, price, image, description):
-        self.set_product(cod_product, name_product, price, image, description)
+        self.set_product(name_product, price, image, description)
         sql = f"UPDATE product "
         sql += f"SET name_product = '{cod_product}',"
         sql += f" description = '{description}',"
