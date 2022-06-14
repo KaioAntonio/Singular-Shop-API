@@ -119,13 +119,13 @@ def login(user: User = Body(
     set_user = User.find_password(email)
     admin = User.find_admin(email)
     user = load_user(email)
-    ERROR = "Usuário ou senha inválido"
+    ERROR = HTTPException(status_code=404, detail= "Usuário ou Senha inválida!")
 
     if not user:
-        raise HTTPException(status_code=404, detail= ERROR)
+        raise ERROR
 
     elif Hasher.verify_password(password,set_user[0][0]) == False:
-        raise HTTPException(status_code=404, detail= ERROR)
+        raise ERROR
 
     access_token = manager.create_access_token(
         data=dict(sub=email)

@@ -54,13 +54,13 @@ class User(BaseModel):
         result = insert_db(sql)
         return result
 
-    def find_password(self,email):
+    def find_password(email):
         sql = f"SELECT password FROM USUARIO WHERE email = '{email}';"
         result = read_password(sql)
         print(result)
         return result
 
-    def find_admin(self,email):
+    def find_admin(email):
         sql = f"SELECT admin FROM USUARIO WHERE email = '{email}';"
         result = read_password(sql)
         print(result)

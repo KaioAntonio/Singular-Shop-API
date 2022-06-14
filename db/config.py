@@ -64,7 +64,7 @@ def read_db_section(sql):
     recset = cur.fetchall()
     list_products = []
     for rec in recset:
-        requireds = {"id_section": rec[0], "cod_product": rec[1], "name_section": rec[2]}
+        requireds = {"id_section": rec[0], "name_section": rec[1], "products_id": rec[2]}
         list_products.append(requireds)
     return list_products
 
