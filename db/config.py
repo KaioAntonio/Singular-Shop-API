@@ -39,6 +39,15 @@ def read_db(sql):
         list_users.append(requireds)
     return list_users
 
+def read_db_user_necessary(sql): #get user information necessary for autentication token
+    con = connect_db()
+    cur = con.cursor()
+    cur.execute(sql)
+    recset = cur.fetchall()
+    for rec in recset:
+        requireds = {"username": rec[0], "email": rec[1], "admin": rec[2], "avatar": rec[3]}
+    return requireds
+
 def read_db_product(sql):
     con = connect_db()
     cur = con.cursor()

@@ -1,10 +1,15 @@
-from fastapi import APIRouter,  HTTPException, Body
+from urllib import response
+from fastapi import APIRouter, Depends,  HTTPException, Body, status
+from pydantic import BaseModel
+from requests import Session
 from models.user import User
 from utils.hasher import Hasher
+from jose import JWTError, jwt
 from fastapi_login import LoginManager
 from fastapi_login.exceptions import InvalidCredentialsException
 import os
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from db import config
 
 SECRET = 'G@LATIKA!MAT' 
 router = APIRouter()
@@ -26,6 +31,8 @@ responses_custom = {
         },
     }
 
+class TokenData(BaseModel):
+    email: str | None = None
 
 @router.post("/v1/user", tags=["User"], description="Creates new user", responses= responses_custom)
 def create_user(new_user: User):
@@ -52,7 +59,7 @@ def create_user(new_user: User):
         new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
         return new_user
 
-@router.get("/v1/user", tags=["User"], description= "Reads all users",
+@router.get("/v1/users", tags=["User"], description= "Reads all users",
      responses={
         200: {
             "description": "User requested",
@@ -132,6 +139,27 @@ def login(user: User = Body(
     )
 
     return {'access_token': access_token, 'token_type': 'bearer', 'admin': admin}
+
+@router.get('/v1/user', tags=["Login"], description="User current", responses=responses_custom)
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"Authorization": "Bearer"},
+    )
+    
+    try: 
+        payload = jwt.decode(token, SECRET)
+        email: str = payload.get("sub")
+        if email is None:
+            raise credentials_exception
+        token_data = TokenData(email=email)
+    except JWTError: 
+        raise credentials_exception
+    user = User.get_current_user(email)
+    if user is None:
+        raise credentials_exception
+    return user #Return username, email, admin and avatar
 
 @router.patch('/v1/avatar/', tags=["User"], description="Patch a new avatar", responses=responses_custom)
 def patch_avatar(user: User = Body(

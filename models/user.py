@@ -1,6 +1,6 @@
 from uuid import uuid4
 from pydantic import BaseModel, Field
-from db.config import read_db,insert_db,read_password
+from db.config import read_db,insert_db, read_db_user_necessary,read_password
 from utils.hasher import Hasher
 
 class User(BaseModel):
@@ -49,6 +49,11 @@ class User(BaseModel):
         result = read_db(sql)
         return result
     
+    def get_current_user(email):  #get user information necessary for autentication token
+        sql = f"SELECT username, email, admin, avatar FROM USUARIO WHERE email = '{email}'"
+        result = read_db_user_necessary(sql)
+        return result
+
     def patch_new_avatar(self, email, avatar):
         sql = f"UPDATE USUARIO SET avatar = '{avatar}' WHERE email = '{email}'"
         result = insert_db(sql)

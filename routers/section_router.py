@@ -28,7 +28,7 @@ def create_section(new_section: Section):
     return {'status': 200, "message": "section create with sucess"}
 
 @router.get("/v1/section/", tags=["Section"], description="Reads all section", responses= responses_custom)
-def get_all_section():
+def get_all_sections():
     section = Section()
     return section.read_all_section()
 
@@ -47,14 +47,14 @@ def delete_section(section_name: str):
         return {"status": 422, "message": "validation error on delete"}
 
 @router.patch('/v1/section/products',tags=["Section"], description="Patch products", responses= responses_custom)
-def patch_section(section: Section):
+def patch_section(section: Section): #Adds more one product a array in database
     product_list = []
     if section.find_section_by_section_name(section.section_name):
         product_list.append(section.find_section_by_section_name(section.section_name))
         product_list[0][0]['products_id'].append(section.product_id)
         section.patch_products_id(section.section_name,product_list[0][0]['products_id'])
         return {"status": 200, "message": "Update name section with sucess!"}
-    else:
+    else: 
         return {"status": 422, "message": "Section name don't exists"}
 
 
