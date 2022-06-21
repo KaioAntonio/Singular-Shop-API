@@ -29,6 +29,8 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
  - FastAPI
  - Python
+ - Postgres
+ - Heroku
 
 <!-- ## 💻 Projeto -->
 ## 🚧 Projeto em progresso
@@ -48,3 +50,28 @@ Você pode acessar a API através [desse link](https://galatika-shop.herokuapp.c
 ---
 
 Feito com ♥ by [Luan Lima](https://github.com/limaluan) and [Kaio Antônio](https://github.com/KaioAntonio).
+
+## Installation
+
+- Ubuntu
+
+```shell
+git clone https://github.com/KaioAntonio/Singular-Shop-API.git
+cd Singular-Shop-API
+```
+
+```shell
+python3.8 -m pip install -r requirements.txt
+python3 run.py
+```
+
+- Mac OS
+```shell
+git clone https://github.com/KaioAntonio/Singular-Shop-API.git
+cd Singular-Shop-API
+```
+
+```shell
+python3.8 -m pip install -r requirements.txt
+python3 run.py
+```
