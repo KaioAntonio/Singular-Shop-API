@@ -14,7 +14,7 @@ class Section(BaseModel):
         self.set_section(section_name, product_id)
         all_sections = Section.read_all_section(self)
         sql = f"INSERT INTO product_section (id_section, section_name, products_id)"
-        sql += f"VALUES ({len(all_sections) + 1}, '{section_name}', ARRAY ['{product_id}']);"
+        sql += f"VALUES ({len(all_sections) + 1}, '{section_name}', ARRAY {product_id});"
         insert_db(sql)
     
     def read_all_section(self):

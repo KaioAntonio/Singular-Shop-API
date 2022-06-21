@@ -1,5 +1,6 @@
 from genericpath import exists
-from fastapi import APIRouter
+from hashlib import new
+from fastapi import APIRouter, Body
 from models.section import Section
 from models.product import Product
 
@@ -21,11 +22,21 @@ responses_custom = {
         },
     }
 
-@router.post("/v1/section/", tags=["Section"], description="Create new Section", responses=responses_custom )
-def create_section(new_section: Section):
-    cod = Product()
-    new_section.insert_section(new_section.section_name, new_section.product_id)
-    return {'status': 200, "message": "section create with sucess"}
+@router.post("/v1/section/", tags=["Section"], description="Create new Section", responses=responses_custom, )
+def create_section(new_section: Section = Body(
+        default={
+        "section_name": "Eletronics",
+        "product_id": "84307b01-6d82-4268-9069-d80105c56f42,84307b01-6d82-4268-9069-1231234124"
+        }
+    )):
+    if new_section.find_section_by_section_name(new_section.section_name):
+        return {'status': 422, "message": "section name already exists!"}
+    if not Product.find_by_id_product(new_section.product_id):
+        return {'status': 422, "message": "product id don't exists!"}
+    else:
+        products =  new_section.product_id.replace(",", " ")
+        new_section.insert_section(new_section.section_name, products.split())
+        return {'status': 200, "message": "section create with sucess"}
 
 @router.get("/v1/section/", tags=["Section"], description="Reads all section", responses= responses_custom)
 def get_all_sections():
@@ -47,7 +58,12 @@ def delete_section(section_name: str):
         return {"status": 422, "message": "validation error on delete"}
 
 @router.patch('/v1/section/products',tags=["Section"], description="Patch products", responses= responses_custom)
-def patch_section(section: Section): #Adds more one product a array in database
+def patch_section(section: Section = Body(
+        default={
+        "section_name": "Eletronics",
+        "product_id": "84307b01-6d82-4268-9069-d80105c56f42,84307b01-6d82-4268-9069-1231234124"
+        }
+    )): #Adds more products a section array in database
     product_list = []
     if section.find_section_by_section_name(section.section_name):
         product_list.append(section.find_section_by_section_name(section.section_name))
