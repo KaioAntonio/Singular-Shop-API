@@ -1,5 +1,4 @@
-from genericpath import exists
-from hashlib import new
+from itertools import product
 from fastapi import APIRouter, Body
 from models.section import Section
 from models.product import Product
@@ -38,10 +37,25 @@ def create_section(new_section: Section = Body(
         new_section.insert_section(new_section.section_name, products.split())
         return {'status': 200, "message": "section create with sucess"}
 
-@router.get("/v1/section/", tags=["Section"], description="Reads all section", responses= responses_custom)
+@router.get("/v1/section/", tags=["Section"], description="Reads all sections", responses= responses_custom)
 def get_all_sections():
     section = Section()
     return section.read_all_section()
+
+@router.get("/v1/section/{id_section}/products", tags=["Section"], description="Reads all sections products by id section", responses= responses_custom)
+def get_all_sections_products(id_section: int):
+    section = Section()
+    result = section.read_all_section_products(id_section)
+    products = Product()
+    list_products = []
+    if result is not None:
+        for i in range(len(result['products_id'])):
+            id_product = result['products_id'][i]
+            list_products.append(products.find_by_id_product(id_product))
+        return list_products
+    else:
+        return {"status": 422, "message": "error in section"}
+    
 
 @router.get("/v1/section/{section_name}/", tags=["Section"], description="Reads a section name", responses=responses_custom)
 def get_section_by_name(section_name: str):

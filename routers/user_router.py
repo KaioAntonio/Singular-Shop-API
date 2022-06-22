@@ -1,14 +1,13 @@
-from urllib import response
-from fastapi import APIRouter, Depends,  HTTPException, Body, status
+
+from fastapi import APIRouter, Depends,  HTTPException, Body, status, Response
+import fastapi
 from pydantic import BaseModel
-from requests import Session
 from models.user import User
 from utils.hasher import Hasher
 from jose import JWTError, jwt
 from fastapi_login import LoginManager
-from fastapi_login.exceptions import InvalidCredentialsException
 import os
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from db import config
 
 SECRET = 'G@LATIKA!MAT' 
@@ -30,12 +29,13 @@ responses_custom = {
             },
         },
     }
+    
 
 class TokenData(BaseModel):
     email: str | None = None
 
 @router.post("/v1/user", tags=["User"], description="Creates new user", responses= responses_custom)
-def create_user(new_user: User):
+def create_user(new_user: User, response: fastapi.Response):
     user_exist = load_user(new_user.email)
     if len(new_user.password) < 8:
         return {'error': 'Senha não pode ter menos que 8 caracteres'}
@@ -50,9 +50,11 @@ def create_user(new_user: User):
         return {'error': 'Senha precisa de um caracter especial'}
 
     if user_exist:
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
         return {'status': 422, 'error': 'Este e-mail já está sendo utilizado'}
 
     elif new_user.email == "":
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
         return {'status': 422, 'error': 'E-mail inválido'}
         
     else:
@@ -81,31 +83,34 @@ def get_all_users():
     return user.read_user()
 
 @router.put("/v1/user", tags=["User"], description= "Update user by email", responses=responses_custom)
-def put_user(new_user: User):
+def put_user(new_user: User, response: fastapi.Response):
     user_exist = load_user(new_user.email)
     if user_exist:
         new_user.put_user(new_user.username, new_user.password, new_user.admin, new_user.avatar, new_user.email)
         return {"status": 200, "message": "update sucess"}
     else:
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
         return {"status": 422, "message": "validation error on put"}
 
 @router.delete("/v1/user/{email}", tags=["User"], description= "Delete user by email", responses= responses_custom)
-def delete_user(email: str):
+def delete_user(email: str, response: fastapi.Response):
     user_exist = load_user(email)
     if user_exist:
         user = User()
         user.delete_user(email)
         return {"status": 200, "message": "user delete with sucess"}
     else:
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
         return {"status": 422, "message": "error on delete"}
 
 @router.get("/v1/user/{email}", tags=["User"], description="Reads a user", responses= responses_custom)
-def get_user_by_email(email: str):
+def get_user_by_email(email: str, response: fastapi.Response):
     user_exist = load_user(email)
     if user_exist:
         user = User()
         return user.find_by_id_user(email)[0]
     else:
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
         return {"status": 422, "message": "validation error on get"}
 
 manager = LoginManager(SECRET, token_url='/auth/token')
@@ -162,7 +167,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     return user #Return username, email, admin and avatar
 
 @router.patch('/v1/avatar/', tags=["User"], description="Patch a new avatar", responses=responses_custom)
-def patch_avatar(user: User = Body(
+def patch_avatar(response: fastapi.Response, user: User = Body(
     default={
             "email": "test@test.com",
             "avatar": "https://thumbs.dreamstime.com/b/imagem-do-avatar-perfil-no-fundo-cinzento-142213585.jpg",
@@ -173,4 +178,5 @@ def patch_avatar(user: User = Body(
         user.patch_new_avatar(user.email,user.avatar)
         return {"status": 200, "message": "Update avatar with sucess!"}
     else:
-        return {"status": 401, "message": "error on patch"}
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
+        return {"status": 422, "message": "error on patch"}

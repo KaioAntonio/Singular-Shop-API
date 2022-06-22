@@ -46,4 +46,4 @@ def delete_product(cod_product: str):
 @router.get("/v1/product/{cod_product}", tags=["Product"], description="Reads a product", responses = responses_custom)
 def get_product_by_cod(cod_product: str):
     product = Product()
-    return product.find_by_id_product(cod_product)[0]
+    return product.find_by_id_product(cod_product)

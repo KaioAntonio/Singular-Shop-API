@@ -77,3 +77,14 @@ def read_db_section(sql):
         list_products.append(requireds)
     return list_products
 
+
+def read_db_section_products(sql):
+    con = connect_db()
+    cur = con.cursor()
+    cur.execute(sql)
+    recset = cur.fetchall()
+    list_products = []
+    for rec in recset:
+        requireds = {"products_id": rec[0]}
+        list_products.append(requireds)
+    return list_products[0]

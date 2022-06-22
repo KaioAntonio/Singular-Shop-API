@@ -1,4 +1,3 @@
-from itertools import product
 from pydantic import BaseModel, Field
 from db.config import *
 
@@ -40,3 +39,7 @@ class Section(BaseModel):
         result = insert_db(sql)
         return result
 
+    def read_all_section_products(self, id_section):
+        sql = f"SELECT products_id FROM product_section WHERE id_section = '{id_section}';"
+        result = read_db_section_products(sql)
+        return result
