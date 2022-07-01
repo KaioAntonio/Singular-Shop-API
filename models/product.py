@@ -45,3 +45,8 @@ class Product(BaseModel):
         sql = f"SELECT * FROM product WHERE cod_product = '{cod_product}'"
         result = read_db_product(sql)
         return result[0]
+
+    def find_by_id_products(cod_product):
+        sql = f"SELECT * FROM product WHERE cod_product = '{cod_product}'"
+        result = read_db_product(sql)
+        return result
