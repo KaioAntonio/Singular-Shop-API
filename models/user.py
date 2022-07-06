@@ -1,6 +1,7 @@
 from uuid import uuid4
 from pydantic import BaseModel, Field
 from db.config import read_db,insert_db, read_db_user_necessary,read_password
+from models.cart import Cart
 from utils.hasher import Hasher
 
 class User(BaseModel):
@@ -22,6 +23,7 @@ class User(BaseModel):
         self.set_user(username, password, email, admin, avatar)
         sql = f"INSERT INTO USUARIO (user_id, username, password,email,admin,avatar)"
         sql += f"VALUES ('{str(uuid4())}', '{username}', '{str(Hasher.get_password_hash(password))}','{email}','{admin}','{avatar}')"
+        Cart.create_cart(email)
         insert_db(sql)
 
     def read_user(self):

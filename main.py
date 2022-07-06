@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from routers import user_router, product_router, section_router
+from routers import user_router, product_router, section_router, cart_router
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, status
@@ -12,6 +12,8 @@ app = FastAPI()
 app.include_router(user_router.router)
 app.include_router(product_router.router)
 app.include_router(section_router.router)
+app.include_router(cart_router.router)
+
 
 app.add_middleware(
     CORSMiddleware,

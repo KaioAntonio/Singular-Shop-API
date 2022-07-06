@@ -77,7 +77,6 @@ def read_db_section(sql):
         list_products.append(requireds)
     return list_products
 
-
 def read_db_section_products(sql):
     con = connect_db()
     cur = con.cursor()
@@ -86,5 +85,16 @@ def read_db_section_products(sql):
     list_products = []
     for rec in recset:
         requireds = {"products_id": rec[0]}
+        list_products.append(requireds)
+    return list_products[0]
+
+def read_db_cart(sql):
+    con = connect_db()
+    cur = con.cursor()
+    cur.execute(sql)
+    recset = cur.fetchall()
+    list_products = []
+    for rec in recset:
+        requireds = {"id_cart": rec[0], "products_cart": rec[1]}
         list_products.append(requireds)
     return list_products[0]

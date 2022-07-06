@@ -35,7 +35,7 @@ class TokenData(BaseModel):
     email: str | None = None
 
 @router.post("/v1/user", tags=["User"], description="Creates new user", responses= responses_custom)
-def create_user(new_user: User, response: fastapi.Response):
+def create_user(new_user: User,response: fastapi.Response):
     user_exist = load_user(new_user.email)
     if len(new_user.password) < 8:
         return {'error': 'Senha não pode ter menos que 8 caracteres'}
@@ -56,7 +56,7 @@ def create_user(new_user: User, response: fastapi.Response):
     elif new_user.email == "":
         response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
         return {'status': 422, 'error': 'E-mail inválido'}
-        
+
     else:
         new_user.insert_user(new_user.username,new_user.password,new_user.email,new_user.admin,new_user.avatar)
         return new_user
