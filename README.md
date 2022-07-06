@@ -1,55 +1,21 @@
-<h1 align="center">
-  <img alt="Singular Ofertas" title="Singular Ofertas" src="https://i.imgur.com/iE0X2eR.png" width="220px" />
-</h1>
-
-<p align="center">
-  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;
-</p>
+# SINGULAR-SHOP-API
 
 
-<p align="center">
-  <img alt="dev.finances" src="https://i.imgur.com/Kf8BYNq.gif" width="100%">
-</p>
+## Description
+  Singular Shop API is an e-commerce project made with my <a href='https://github.com/limaluan/Singular_Ofertas_e-shop'>Front-End</a> friend in order to learn, I used fastapi because of its great performance and    postgres because it is free to deploy on heroku. In addition, this project has the following features:
+  - User registration
+  - Login
+  - Product Creation
+  - Administration Dashboard
+  - Section Creation
+  - Shopping Cart
 
-## 🚀 Tecnologias
-
-Esse projeto foi desenvolvido com as seguintes tecnologias:
-
-<h2><a href='https://github.com/limaluan/Singular_Ofertas_e-shop'>Front-End</a></h2>
-
-- HTML
-- Styled-Components
-- TypeScript
-- ReactJs
-- Axios
-
-<h2>Back-End</h2>
+## Technologies
 
  - FastAPI
  - Python
  - Postgres
  - Heroku
-
-<!-- ## 💻 Projeto -->
-## 🚧 Projeto em progresso
- Esse projeto trata-se de um e-shop simples com funcionalidades como:
- - Cadastro de Usuário
- - Login
- - Criação de Produtos
- - Dashboard de Admnistração
-
-## 🔖 Layout
-
-Você pode visualizar o layout do projeto através [desse link](https://www.figma.com/file/djgVl7LQRiR6kM2gKoWOfC/Singular-Ofertas?node-id=2%3A4). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
-
-## 🌐 API
-Você pode acessar a API através [desse link](https://galatika-shop.herokuapp.com).
-
----
-
-Feito com ♥ by [Luan Lima](https://github.com/limaluan) and [Kaio Antônio](https://github.com/KaioAntonio).
 
 ## Installation
 
@@ -75,3 +41,17 @@ cd Singular-Shop-API
 python3.8 -m pip install -r requirements.txt
 python3 run.py
 ```
+## Usage
+
+```shell
+uvicorn main:app --reload
+```
+or access the link https://galatika-shop.herokuapp.com/docs
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
