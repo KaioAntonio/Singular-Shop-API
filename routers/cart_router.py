@@ -27,7 +27,8 @@ responses_custom = {
 @router.post("/v1/cart/", tags=["Cart"], description="Insert products a Cart", responses=responses_custom, )
 def insert_cart(new_products: Cart = Body(
         default={
-        "products_cart": "84307b01-6d82-4268-9069-d80105c56f42,84307b01-6d82-4268-9069-1231234124"
+        "products_cart": "84307b01-6d82-4268-9069-d80105c56f42,84307b01-6d82-4268-9069-1231234124",
+        "email": "test@test.com"
         }
     )):
     products = new_products.products_cart.replace(",", " ")
@@ -60,9 +61,19 @@ responses= responses_custom)
 def delete_product_cart(cart: Cart):
     email = cart.email
     products = cart.products_cart
+    pop_product = []
     if cart.read_cart(email):
-        cart.delete_products_cart(products,email)
-        return {"message": "Product(s) delete with success"}
+        read_cart = cart.read_cart(email)
+        pop_product = read_cart['products_cart']
+        if Product.find_by_id_products(products):
+            if products in pop_product:
+                pop_product.remove(products)
+                cart.delete_products_cart(pop_product, email)
+                return {"message": "Product(s) delete with success"}
+            else:
+                return {"message": "Product not in cart"}
+        else:
+            return {'status': 422, "message": "product id don't exists!"}
     else:
         return {"message": "Error in delete product"}
     
