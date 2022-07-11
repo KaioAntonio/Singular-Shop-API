@@ -1,8 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from models.user import *
-from db.config import *
-from routers import user_router
+from routers import user_router, product_router, section_router, cart_router
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, status
@@ -12,20 +10,21 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 app.include_router(user_router.router)
-origins = ["*"]
-
+app.include_router(product_router.router)
+app.include_router(section_router.router)
+app.include_router(cart_router.router)
 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 @app.get("/")
-async def Home():
+async def home():
     return "Welcome to API-REST of SINGULAR-SHOP /docs to access API documentation"
 
 @app.exception_handler(RequestValidationError)

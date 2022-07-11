@@ -1,8 +1,8 @@
 from uuid import uuid4
 from pydantic import BaseModel, Field
-from db.config import *
-from passlib.context import CryptContext
-from utils.hasher import *
+from db.config import read_db,insert_db, read_db_user_necessary,read_password
+from models.cart import Cart
+from utils.hasher import Hasher
 
 class User(BaseModel):
 
@@ -23,6 +23,7 @@ class User(BaseModel):
         self.set_user(username, password, email, admin, avatar)
         sql = f"INSERT INTO USUARIO (user_id, username, password,email,admin,avatar)"
         sql += f"VALUES ('{str(uuid4())}', '{username}', '{str(Hasher.get_password_hash(password))}','{email}','{admin}','{avatar}')"
+        Cart.create_cart(email)
         insert_db(sql)
 
     def read_user(self):
@@ -48,6 +49,16 @@ class User(BaseModel):
     def find_by_id_user(self, email):
         sql = f"SELECT * FROM USUARIO WHERE email = '{email}'"
         result = read_db(sql)
+        return result
+    
+    def get_current_user(email):  #get user information necessary for autentication token
+        sql = f"SELECT username, email, admin, avatar FROM USUARIO WHERE email = '{email}'"
+        result = read_db_user_necessary(sql)
+        return result
+
+    def patch_new_avatar(self, email, avatar):
+        sql = f"UPDATE USUARIO SET avatar = '{avatar}' WHERE email = '{email}'"
+        result = insert_db(sql)
         return result
 
     def find_password(email):
