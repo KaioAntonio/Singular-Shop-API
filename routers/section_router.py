@@ -82,11 +82,11 @@ def get_section_by_name(section_name: str):
     section = Section()
     return section.find_section_by_section_name(section_name)
 
-@router.delete("/v1/section/{section_name}/", tags=["Section"], description="Deletes a section", responses=responses_custom)
-def delete_section(section_name: str):
+@router.delete("/v1/section/{id_section}/", tags=["Section"], description="Deletes a section", responses=responses_custom)
+def delete_section(id_section: str):
     section = Section()
-    if get_section_by_name(section_name):
-        section.delete_section(section_name)
+    if id_section is not None:
+        section.delete_section(id_section)
         return {"status": 200, "message": "Section delete with sucess"}
     else:
         return {"status": 422, "message": "validation error on delete"}

@@ -21,9 +21,9 @@ class Section(BaseModel):
         result = read_db_section(sql)
         return result
     
-    def delete_section(self, section_name):
+    def delete_section(self, id_section):
         sql = f"DELETE FROM product_section"
-        sql += f" WHERE section_name = '{section_name}'"
+        sql += f" WHERE id_section = '{id_section}'"
         insert_db(sql)
 
     def find_section_by_section_name(self, section_name):
