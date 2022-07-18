@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from models.product import Product
+from models.section import Section
 
 router = APIRouter()
 responses_custom = {
@@ -40,7 +41,8 @@ def put_product(new_product: Product):
 def delete_product(cod_product: str):
     product = Product()
     product.delete_product(cod_product)
-    print(product)
+    section = Section.read_all_section(0)
+    print(section['products_id'])
     return {"message": "product delete with sucess"}
 
 @router.get("/v1/product/{cod_product}", tags=["Product"], description="Reads a product", responses = responses_custom)
