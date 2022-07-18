@@ -2,13 +2,13 @@ import psycopg2
 import os
 
 USER = "inixdviasnbjiz"
-PASSWORD = "7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679"
+KEY = "7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679"
 
 def connect_db():
     con = psycopg2.connect(host='ec2-52-5-110-35.compute-1.amazonaws.com', 
                             database='d27fpf0b9mc5lk',
                             user= os.getenv(USER,"inixdviasnbjiz" ),
-                            password= os.getenv(PASSWORD, "7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679"))
+                            password= os.getenv(KEY, "7d3b08f9f3321c6db320a9aaf409268500f66269cbe9a19bde6c8d8664727679"))
     return con
 
 def disconnect():

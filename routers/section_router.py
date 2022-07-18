@@ -49,7 +49,6 @@ def get_all_sections():
     list_products = []
     section_products = {}
     list_section = []
-    list_all_products = []
     if result is not None:
         for c in range(len(result)):    
             id_section = result[c]['id_section']

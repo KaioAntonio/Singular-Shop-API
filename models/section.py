@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from db.config import *
+from db.config import insert_db,read_db_section,read_db_section_products
 
 class Section(BaseModel):
     section_name: str = Field(None, alias="section_name")

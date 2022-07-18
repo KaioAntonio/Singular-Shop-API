@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from db.config import *
+from db.config import insert_db,read_db_cart
 
 class Cart(BaseModel):
     products_cart: str = Field(None, alias= "products_cart")
