@@ -41,8 +41,13 @@ def put_product(new_product: Product):
 def delete_product(cod_product: str):
     product = Product()
     product.delete_product(cod_product)
+    product_info = Product.find_by_id_products(cod_product)
     section = Section.read_all_section(0)
-    print(section['products_id'])
+    for i in range(len(section)):
+        print(section[i]['products_id'])
+        print(product_info)
+        if cod_product in section[i]['products_id']:
+            Section.delete_a_product_in_section(cod_product)
     return {"message": "product delete with sucess"}
 
 @router.get("/v1/product/{cod_product}", tags=["Product"], description="Reads a product", responses = responses_custom)

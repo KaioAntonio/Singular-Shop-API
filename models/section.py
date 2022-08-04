@@ -43,3 +43,8 @@ class Section(BaseModel):
         sql = f"SELECT products_id FROM product_section WHERE id_section = '{id_section}';"
         result = read_db_section_products(sql)
         return result
+    
+    def delete_a_product_in_section(id_product):
+        sql = f"DELETE FROM product_section"
+        sql += f" WHERE '{id_product}' = ANY(products_id)"
+        insert_db(sql)
